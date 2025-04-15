@@ -23,6 +23,12 @@
 #include "fs_constants.h"
 #include "fs_debug.cu.h"
 
+template<typename T>
+__forceinline__ __device__ T __shfl(T val, int lane) {
+	return __shfl_sync(0xFFFFFFFF, val, lane);
+}
+
+
 #define CUDA_SAFE_CALL(x) if((x)!=cudaSuccess) { fprintf(stderr,"CUDA ERROR %s: %d %s\n",__FILE__, __LINE__, cudaGetErrorString(cudaGetLastError())); exit(-1); }
 
 #define WAIT_ON_MEM(mem,val)  while(readNoCache(&(mem))!=val);

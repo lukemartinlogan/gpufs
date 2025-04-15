@@ -30,7 +30,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include "bigmatrix_nofiles.cu"
+//#include "bigmatrix_nofiles.cu"
 
 void unmap_close_file(int fd, void* ptr,int len)
 {

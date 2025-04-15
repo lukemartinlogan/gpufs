@@ -1,0 +1,1 @@
+ior -w -b 1M -t 1M -k -o ~/et/z

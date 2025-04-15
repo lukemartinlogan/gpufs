@@ -115,8 +115,11 @@ typedef volatile GPUGlobals* GPUGlobals_ptr;
 
 void initializer(GPUGlobals_ptr* globals)
 {
+	printf("%s %d\n", __FILE__, __LINE__);
 	CUDA_SAFE_CALL(cudaSetDeviceFlags(cudaDeviceMapHost));
+	printf("%s %d\n", __FILE__, __LINE__);
 	*globals=new GPUGlobals();
+	printf("%s %d\n", __FILE__, __LINE__);
 
 	//ssd_init( (*globals)->stagingArea, sizeof(uchar) * RW_HOST_WORKERS * RW_SCRATCH_PER_WORKER * FS_BLOCKSIZE * RW_SLOTS_PER_WORKER );
 

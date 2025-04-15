@@ -28,6 +28,12 @@ __forceinline__ __device__ T __shfl(T val, int lane) {
 	return __shfl_sync(0xFFFFFFFF, val, lane);
 }
 
+#define TYPE_UNWRAP(X) ESC(ISH X)
+#define ISH(...) ISH __VA_ARGS__
+#define ESC(...) ESC_(__VA_ARGS__)
+#define ESC_(...) VAN##__VA_ARGS__
+#define VANISH
+#define __TU(X) TYPE_UNWRAP(X)
 
 #define CUDA_SAFE_CALL(x) if((x)!=cudaSuccess) { fprintf(stderr,"CUDA ERROR %s: %d %s\n",__FILE__, __LINE__, cudaGetErrorString(cudaGetLastError())); exit(-1); }
 

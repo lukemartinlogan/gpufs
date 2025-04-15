@@ -10,6 +10,8 @@ cmake*
 *.oa
 *.o.cmd
 *.o.d
+*.o
+*.a
 build
 *.temp_cc
 *.temp_h

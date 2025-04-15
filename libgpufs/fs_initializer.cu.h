@@ -43,7 +43,6 @@
 	memset((void*)h_ptr,0,sizeof(T));\
 	void* d_ptr;\
 	CUDA_SAFE_CALL(cudaHostGetDevicePointer((void**)(&d_ptr), (void*)(h_ptr), 0));\
-	printf("%s %d: \n", __FILE__, __LINE__);\
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol((symbol),&d_ptr,sizeof(void*)));\
 }
 
@@ -139,36 +138,23 @@ struct GPUGlobals{
 
 	GPUGlobals()
 	{
-		printf("%s %d\n", __FILE__, __LINE__);
 		initGpuShmemPtr(CPU_IPC_OPEN_Queue,cpu_ipcOpenQueue,g_cpu_ipcOpenQueue);
-		printf("%s %d\n", __FILE__, __LINE__);
 		cpu_ipcOpenQueue->init_host();
-		printf("%s %d\n", __FILE__, __LINE__);
 
 		initGpuShmemPtr(CPU_IPC_RW_Queue,cpu_ipcRWQueue,g_cpu_ipcRWQueue);
-		printf("%s %d\n", __FILE__, __LINE__);
 		cpu_ipcRWQueue->init_host();
 
 		initGpuShmemPtr(CPU_IPC_RW_Flags,cpu_ipcRWFlags,g_cpu_ipcRWFlags);
-		printf("%s %d\n", __FILE__, __LINE__);
 		cpu_ipcRWFlags->init_host();
-		printf("%s %d\n", __FILE__, __LINE__);
 
 		initGpuGlobals(GPU_IPC_RW_Manager,ipcRWManager,g_ipcRWManager);
-		printf("%s %d\n", __FILE__, __LINE__);
 		initGpuGlobals(PPool,ppool,g_ppool);
-		printf("%s %d\n", __FILE__, __LINE__);
 		initGpuGlobals(FTable,ftable,g_ftable);
-		printf("%s %d\n", __FILE__, __LINE__);
 		initGpuGlobals(HashMap,hashMap,g_hashMap);
-		printf("%s %d\n", __FILE__, __LINE__);
 	//	initGpuGlobals(preclose_table,_preclose_table,g_preclose_table);
 	
-		printf("%s %d\n", __FILE__, __LINE__);
 		CUDA_SAFE_CALL(cudaMalloc(&rawStorage,sizeof(Page)*PPOOL_FRAMES));
-		printf("%s %d\n", __FILE__, __LINE__);
 		CUDA_SAFE_CALL(cudaMemset(rawStorage,0,sizeof(Page)*PPOOL_FRAMES));
-		printf("%s %d\n", __FILE__, __LINE__);
 
 		async_close_rb=new async_close_rb_t();
 		async_close_rb->init_host();

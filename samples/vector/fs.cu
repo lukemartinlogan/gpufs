@@ -67,8 +67,6 @@ int main( int argc, char** argv)
 	int num_files=argc-1-3;
 	char** d_filenames=NULL;
 	
-	printf("HERE 1!!!\n");
-
 	double total_time=0;
 //	int scratch_size=128*1024*1024*4;
 
@@ -76,15 +74,11 @@ for(int i=1;i<trials+1;i++){
 
 
 	
-	printf("HERE 2!!!\n");
 	volatile GPUGlobals* gpuGlobals;
 	initializer(&gpuGlobals);
-	printf("HERE 3!!!\n");
 	
 	init_device_app();
-	printf("HERE 4!!!\n");
 	init_app();
-	printf("HERE 5!!!\n");
 
 
 	if (num_files>0){
@@ -96,7 +90,6 @@ for(int i=1;i<trials+1;i++){
 	}
 	double time_before=_timestamp();
 
-	printf("HERE 6!!!\n");
 	if (!i) time_before=0;
 
         vector_add<<<nblocks,nthreads,0,gpuGlobals->streamMgr->kernelStream>>>(d_filenames[0],d_filenames[1],d_filenames[2],nblocks,nthreads);

@@ -31,7 +31,7 @@
 #include <string.h>
 
 #define MAIN_FS_FILE
-#include "vector_gpu.cu"
+#include "randio_gpu.cu"
 
 
 char*  update_filename(const char* h_filename){
@@ -92,7 +92,7 @@ for(int i=1;i<trials+1;i++){
 
 	if (!i) time_before=0;
 
-        vector_add<<<nblocks,nthreads,0,gpuGlobals->streamMgr->kernelStream>>>(d_filenames[0],d_filenames[1],d_filenames[2],nblocks,nthreads);
+        randio<<<nblocks,nthreads,0,gpuGlobals->streamMgr->kernelStream>>>(d_filenames[0],nblocks,nthreads);
 	
 	
 	run_gpufs_handler(gpuGlobals,0);

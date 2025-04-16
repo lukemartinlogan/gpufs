@@ -1,1 +1,0 @@
-./fs_gpu 1 1 1  ${HOME}/et/x ${HOME}/et/y ${HOME}/et/z

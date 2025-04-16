@@ -16,11 +16,11 @@ LIBGPUFSDIR=../../libgpufs/
 
 include $(LIBGPUFSDIR)/Makefile
 
-fs_gpu: vector_gpu.o
+fs_gpu: randio_gpu.o
 	$(NVCC) --relocatable-device-code=true -o fs_gpu fs.cu -I$(LIBGPUFSDIR) -I../../gpufs_con_lib.user/ $(LIBGPUFSDIR)/release/libgpufs.a
 
-vector_gpu.o: vector_gpu.cu
-	$(NVCC) -dc vector_gpu.cu -I$(LIBGPUFSDIR)
+randio_gpu.o: randio_gpu.cu
+	$(NVCC) -dc randio_gpu.cu -I$(LIBGPUFSDIR)
 
 clean: 
 	rm *.o fs_gpu

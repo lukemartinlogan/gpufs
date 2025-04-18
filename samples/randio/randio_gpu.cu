@@ -65,8 +65,8 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	}
 	size_t id = globalId();
     for (size_t i = 0; i < size; ++i) { 
-		int page = random_uint(id + i, npages);
-		int off = page * FS_BLOCKSIZE;
+		size_t page = random_uint(id + i, npages);
+		size_t off = page * FS_BLOCKSIZE;
 		if (FS_BLOCKSIZE != gread(zfd_x, off, FS_BLOCKSIZE, scratch)) {
 			assert(NULL);
 		}

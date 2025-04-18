@@ -18,7 +18,7 @@ INSTALLDIR?=..
 REG?=32
 
 GPUFSLIB=../gpufs_con_lib.user/
-CUDA_ROOT:=/usr/local/cuda/
+CUDA_ROOT:=/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/cuda-12.4.0-6bzpo2x/
 CUDA_INCLUDE=-I$(CUDA_ROOT)/include -I$(GPUFSLIB) -I$(LIBGPUFSDIR)
 
 ifneq ($(dbg),1)

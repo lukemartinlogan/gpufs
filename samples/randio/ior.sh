@@ -1,3 +1,3 @@
-ior -w -b 256M -t 1M -k -o ~/et/x
-ior -w -b 256M -t 1M -k -o ~/et/y
-ior -w -b 256M -t 1M -k -o ~/et/z
+mpirun -n 8 ior -w -b 2g -t 1M -k -o /tmp/x
+mpirun -n 8 ior -w -b 2g -t 1M -k -o /tmp/y
+mpirun -n 8 ior -w -b 2g -t 1M -k -o /tmp/z

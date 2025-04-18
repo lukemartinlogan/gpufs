@@ -1,1 +1,1 @@
-./fs_gpu 1 1 1  ${HOME}/et/x
+./fs_gpu 1 1 32  /tmp/x

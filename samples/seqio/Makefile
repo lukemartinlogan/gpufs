@@ -25,8 +25,8 @@ fs_mmap_gpu: seqio_gpu_mmap.o
 seqio_gpu.o: seqio_gpu.cu
 	$(NVCC) -dc seqio_gpu.cu -I$(LIBGPUFSDIR)
 
-seqio_gpu_mmap.o: seqio_mmap_gpu.cu
-	$(NVCC) -dc seqio_mmap_gpu.cu -I$(LIBGPUFSDIR)
+seqio_gpu_mmap.o: seqio_gpu_mmap.cu
+	$(NVCC) -dc seqio_gpu_mmap.cu -I$(LIBGPUFSDIR)
 
 clean: 
 	rm *.o fs_gpu

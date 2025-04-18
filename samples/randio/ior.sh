@@ -1,1 +1,1 @@
-mpirun -n 32 ior -w -b 8g -t 1M -k -o /tmp/x
+mpirun -n 1 ior -w -b 8g -t 1M -k -o ${HOME}/x

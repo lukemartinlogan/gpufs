@@ -44,21 +44,23 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	if (zfd_x<0) ERROR("Failed to open matrix");
 
 	__shared__ uchar* scratch;
-	size_t npages = fstat(zfd_x) / FS_BLOCKSIZE;
+        size_t npages = fstat(zfd_x) / FS_BLOCKSIZE;
+        // printf("NPAGES: %llu", npages);
 	BEGIN_SINGLE_THREAD scratch = (uchar*) malloc(FS_BLOCKSIZE);
 	GPU_ASSERT(scratch != NULL);
 	END_SINGLE_THREAD
 	
-	BEGIN_SINGLE_THREAD
-		toInit=init_lock.try_wait();
 	
-		if (toInit == 1)
-		{
-			single_thread_ftruncate(zfd_x,0);
-			__threadfence();
-			init_lock.signal();
-		}
-	END_SINGLE_THREAD
+	// BEGIN_SINGLE_THREAD
+	// 	toInit=init_lock.try_wait();
+	
+	// 	if (toInit == 1)
+	// 	{
+	// 		single_thread_ftruncate(zfd_x,0);
+	// 		__threadfence();
+	// 		init_lock.signal();
+	// 	}
+	// END_SINGLE_THREAD
 	size_t size = (npages / (nthreads * nblocks));
 	if (size == 0) {
 		size = 1;

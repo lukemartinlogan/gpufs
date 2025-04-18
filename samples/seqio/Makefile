@@ -7,7 +7,7 @@
 #* ASPLOS13, March 2013, Houston,USA
 #*/
 
-all: fs_gpu
+all: fs_gpu fs_mmap_gpu
 
 CXXFLAGS=-fopenmp -g -O2
 
@@ -16,17 +16,17 @@ LIBGPUFSDIR=../../libgpufs/
 
 include $(LIBGPUFSDIR)/Makefile
 
-fs_gpu: randio_gpu.o
+fs_gpu: seqio_gpu.o
 	$(NVCC) --relocatable-device-code=true -o fs_gpu fs.cu -I$(LIBGPUFSDIR) -I../../gpufs_con_lib.user/ $(LIBGPUFSDIR)/release/libgpufs.a
 
-randio_gpu.o: randio_gpu.cu
-	$(NVCC) -dc randio_gpu.cu -I$(LIBGPUFSDIR)
-
-fs_gpu_mmap: randio_gpu_mmap.o
+fs_mmap_gpu: seqio_mmap_gpu.o
 	$(NVCC) --relocatable-device-code=true -o fs_gpu fs.cu -I$(LIBGPUFSDIR) -I../../gpufs_con_lib.user/ $(LIBGPUFSDIR)/release/libgpufs.a
 
-randio_gpu_mmap.o: randio_gpu_mmap.cu
-	$(NVCC) -dc randio_gpu_mmap.cu -I$(LIBGPUFSDIR)
+seqio_gpu.o: seqio_gpu.cu
+	$(NVCC) -dc seqio_gpu.cu -I$(LIBGPUFSDIR)
+
+seqio_gpu.o: seqio_mmap_gpu.cu
+	$(NVCC) -dc seqio_mmap_gpu.cu -I$(LIBGPUFSDIR)
 
 clean: 
 	rm *.o fs_gpu

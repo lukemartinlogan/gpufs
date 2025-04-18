@@ -40,46 +40,46 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	
 	__shared__ int toInit;
 	
-	zfd_x=gopen(p_x,O_GRDONLY | O_DIRECT);
+	zfd_x=gopen(p_x,O_GRDONLY);
 	if (zfd_x<0) ERROR("Failed to open matrix");
 
-	__shared__ uchar* scratch;
-        size_t npages = fstat(zfd_x) / FS_BLOCKSIZE;
-	BEGIN_SINGLE_THREAD scratch = (uchar*) malloc(FS_BLOCKSIZE);
-	GPU_ASSERT(scratch != NULL);
+	size_t npages = fstat(zfd_x) / FS_BLOCKSIZE;
+
+	volatile float* x=(volatile float*)gmmap(NULL, fstat(zfd_x),0, O_GRDONLY, zfd_x, 0);
+	
+	if (x==GMAP_FAILED) ERROR("GMMAP failed");
+		
+	BEGIN_SINGLE_THREAD
+		toInit=init_lock.try_wait();
+	
+		if (toInit == 1)
+		{
+			single_thread_ftruncate(zfd_x,0);
+			__threadfence();
+			init_lock.signal();
+		}
 	END_SINGLE_THREAD
-	
-	
-	// BEGIN_SINGLE_THREAD
-	// 	toInit=init_lock.try_wait();
-	
-	// 	if (toInit == 1)
-	// 	{
-	// 		single_thread_ftruncate(zfd_x,0);
-	// 		__threadfence();
-	// 		init_lock.signal();
-	// 	}
-	// END_SINGLE_THREAD
-	size_t size = (npages / (nthreads * nblocks));
+	int size = (npages / (nthreads * nblocks));
 	if (size == 0) {
 		size = 1;
 	}
-	size_t id = globalId() * size;
-	printf("ID: %d\n", id);
-    for (size_t i = 0; i < size; ++i) { 
-		// size_t page = random_uint(id + i, npages);
-		size_t page = (id + i) % npages;
-		size_t off = page * FS_BLOCKSIZE;
-		if (FS_BLOCKSIZE != gread(zfd_x, off, FS_BLOCKSIZE, scratch)) {
-			assert(NULL);
+	int id = globalId();
+    for (int i = 0; i < size; ++i) { 
+		int page = random_uint(id + i, npages);
+		int off = page * FS_BLOCKSIZE;
+		size_t sum = 0;
+		for (int j = 0; j < FS_BLOCKSIZE; ++j) {
+			sum += x[off + j];
 		}
 	}
+	if (gmunmap(x,0)) ERROR("Failed to unmap big matrix");
+
 	gclose(zfd_x);
 }
 
 
 void init_device_app(){
-      CUDA_SAFE_CALL(cudaDeviceSetLimit(cudaLimitMallocHeapSize,1 *(1<<30)));
+      CUDA_SAFE_CALL(cudaDeviceSetLimit(cudaLimitMallocHeapSize,1 * (1<<30)));
 }
 void init_app()
 {

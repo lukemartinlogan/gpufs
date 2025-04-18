@@ -19,13 +19,13 @@ include $(LIBGPUFSDIR)/Makefile
 fs_gpu: seqio_gpu.o
 	$(NVCC) --relocatable-device-code=true -o fs_gpu fs.cu -I$(LIBGPUFSDIR) -I../../gpufs_con_lib.user/ $(LIBGPUFSDIR)/release/libgpufs.a
 
-fs_mmap_gpu: seqio_mmap_gpu.o
+fs_mmap_gpu: seqio_gpu_mmap.o
 	$(NVCC) --relocatable-device-code=true -o fs_gpu fs.cu -I$(LIBGPUFSDIR) -I../../gpufs_con_lib.user/ $(LIBGPUFSDIR)/release/libgpufs.a
 
 seqio_gpu.o: seqio_gpu.cu
 	$(NVCC) -dc seqio_gpu.cu -I$(LIBGPUFSDIR)
 
-seqio_gpu.o: seqio_mmap_gpu.cu
+seqio_gpu_mmap.o: seqio_mmap_gpu.cu
 	$(NVCC) -dc seqio_mmap_gpu.cu -I$(LIBGPUFSDIR)
 
 clean: 

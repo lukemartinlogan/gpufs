@@ -31,7 +31,7 @@
 #include <string.h>
 
 #define MAIN_FS_FILE
-#include "randio_gpu.cu"
+#include "seqio_gpu.cu"
 
 
 char*  update_filename(const char* h_filename){

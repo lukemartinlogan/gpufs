@@ -7,7 +7,7 @@
 #* ASPLOS13, March 2013, Houston,USA
 #*/
 
-all: fs_gpu
+all: fs_gpu fs_gpu_mmap
 
 CXXFLAGS=-fopenmp -g -O2
 

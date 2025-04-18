@@ -21,7 +21,8 @@ build
 cufile.log
 myfile.txt
 
-.*fs_gpu
+fs_gpu
+out
 .*out
 
 build/

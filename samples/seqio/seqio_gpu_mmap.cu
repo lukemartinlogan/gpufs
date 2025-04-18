@@ -17,13 +17,6 @@
 __device__ volatile INIT_LOCK init_lock;
 __device__ volatile LAST_SEMAPHORE last_lock;
 
-__device__ size_t random_uint(size_t state, size_t upper) {
-	state = (state * 9301 + 49297) % 233280;
-	float rnd = state / (float)233280.0;
-	state = rnd * upper;
-  return state;
-}
-
 __device__ size_t globalId() {
 	size_t idx_x = blockIdx.x * blockDim.x + threadIdx.x;
  	size_t idx_y = blockIdx.y * blockDim.y + threadIdx.y;
@@ -63,9 +56,9 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	if (size == 0) {
 		size = 1;
 	}
-	int id = globalId();
+	int id = globalId() * size;
     for (int i = 0; i < size; ++i) { 
-		int page = random_uint(id + i, npages);
+		int page = id + i;
 		int off = page * FS_BLOCKSIZE;
 		size_t sum = 0;
 		for (int j = 0; j < FS_BLOCKSIZE; ++j) {

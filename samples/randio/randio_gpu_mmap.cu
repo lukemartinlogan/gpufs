@@ -63,7 +63,7 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	if (size == 0) {
 		size = 1;
 	}
-	int id = globalId();
+	int id = globalId() * size;
     for (int i = 0; i < size; ++i) { 
 		int page = random_uint(id + i, npages);
 		int off = page * FS_BLOCKSIZE;

@@ -49,17 +49,6 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	GPU_ASSERT(scratch != NULL);
 	END_SINGLE_THREAD
 	
-	
-	// BEGIN_SINGLE_THREAD
-	// 	toInit=init_lock.try_wait();
-	
-	// 	if (toInit == 1)
-	// 	{
-	// 		single_thread_ftruncate(zfd_x,0);
-	// 		__threadfence();
-	// 		init_lock.signal();
-	// 	}
-	// END_SINGLE_THREAD
 	size_t size = (npages / (nthreads * nblocks));
 	if (size == 0) {
 		size = 1;
@@ -67,8 +56,7 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	size_t id = globalId() * size;
 	printf("ID: %d\n", id);
     for (size_t i = 0; i < size; ++i) { 
-		// size_t page = random_uint(id + i, npages);
-		size_t page = (id + i) % npages;
+		size_t page = random_uint(id + i, npages);
 		size_t off = page * FS_BLOCKSIZE;
 		if (FS_BLOCKSIZE != gread(zfd_x, off, FS_BLOCKSIZE, scratch)) {
 			assert(NULL);

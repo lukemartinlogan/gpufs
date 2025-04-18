@@ -18,16 +18,17 @@ INSTALLDIR?=..
 REG?=32
 
 GPUFSLIB=../gpufs_con_lib.user/
-CUDA_ROOT:=/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/cuda-12.4.0-6bzpo2x/
-CUDA_INCLUDE=-I$(CUDA_ROOT)/include -I$(GPUFSLIB) -I$(LIBGPUFSDIR)
+# CUDA_ROOT:=/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/cuda-12.4.0-6bzpo2x/
+# CUDA_INCLUDE=-I$(CUDA_ROOT)/include -I$(GPUFSLIB) -I$(LIBGPUFSDIR)
+CUDA_INCLUDE= -I$(GPUFSLIB) -I$(LIBGPUFSDIR)
 
 ifneq ($(dbg),1)
 	MACROS=-DDEBUG_NOINLINE=""
-	NVCC=$(CUDA_ROOT)/bin/nvcc -std=c++11 --generate-code code=sm_86,arch=compute_86 $(CUDA_INCLUDE) $(MACROS) -O3 -maxrregcount $(REG)
+	NVCC=nvcc -std=c++11 --generate-code code=sm_86,arch=compute_86 $(CUDA_INCLUDE) $(MACROS) -O3 -maxrregcount $(REG)
 	OUTPUTDIR=release
 else
 	MACROS=-DDEBUG_NOINLINE="__noinline__" -DMALLOC_STATS -DTIMING_STATS -g
-	NVCC=$(CUDA_ROOT)/bin/nvcc -std=c++11 --generate-code code=sm_86,arch=compute_86 $(CUDA_INCLUDE) $(MACROS) -O0 -maxrregcount $(REG) --device-debug --debug -G
+	NVCC=/nvcc -std=c++11 --generate-code code=sm_86,arch=compute_86 $(CUDA_INCLUDE) $(MACROS) -O0 -maxrregcount $(REG) --device-debug --debug -G
 	OUTPUTDIR=debug
 endif
 

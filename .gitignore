@@ -21,6 +21,9 @@ build
 cufile.log
 myfile.txt
 
+.*fs_gpu
+.*out
+
 build/
 benchmarks/HermesVFD
 

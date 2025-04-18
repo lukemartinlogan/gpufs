@@ -79,7 +79,7 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 
 
 void init_device_app(){
-      CUDA_SAFE_CALL(cudaDeviceSetLimit(cudaLimitMallocHeapSize,16 *(1<<20)));
+      CUDA_SAFE_CALL(cudaDeviceSetLimit(cudaLimitMallocHeapSize,1 * (1<<30)));
 }
 void init_app()
 {

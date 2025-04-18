@@ -40,7 +40,7 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 	
 	__shared__ int toInit;
 	
-	zfd_x=gopen(p_x,O_GRDONLY);
+	zfd_x=gopen(p_x,O_GRDONLY | O_DIRECT);
 	if (zfd_x<0) ERROR("Failed to open matrix");
 
 	__shared__ uchar* scratch;
@@ -59,12 +59,12 @@ void __global__ randio(char* p_x, int nblocks, int nthreads)
 			init_lock.signal();
 		}
 	END_SINGLE_THREAD
-	int size = (npages / (nthreads * nblocks));
+	size_t size = (npages / (nthreads * nblocks));
 	if (size == 0) {
 		size = 1;
 	}
-	int id = globalId();
-    for (int i = 0; i < size; ++i) { 
+	size_t id = globalId();
+    for (size_t i = 0; i < size; ++i) { 
 		int page = random_uint(id + i, npages);
 		int off = page * FS_BLOCKSIZE;
 		if (FS_BLOCKSIZE != gread(zfd_x, off, FS_BLOCKSIZE, scratch)) {
